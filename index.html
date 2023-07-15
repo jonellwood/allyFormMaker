@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Maker</title>
+  <script>
+     function generateForm() {
+        var numInputs = document.getElementById('numInputs').value;
+        var formHTML = '<form>';
+
+        for (var i = 1; i <= numInputs; i++) {
+          var inputType = document.getElementById('inputType' + i).value;
+          var inputName = document.getElementById('inputName' + i).value;
+
+          formHTML += '<label for="input' + i + '">' + inputName + ': </label>';
+
+          if (inputType === 'text' || inputType === 'number' || inputType === 'email') {
+            formHTML += '<input type="' + inputType + '" id="input' + i + '" name="' + inputName + '">';
+          } else if (inputType === 'textarea') {
+            formHTML += '<textarea id="input' + i + '" name="' + inputName + '"></textarea>';
+          } else if (inputType === 'checkbox') {
+            formHTML += '<input type="checkbox" id="input' + i + '" name="' + inputName + '"> Check me';
+          } else if (inputType === 'radio') {
+            formHTML += '<input type="radio" id="input' + i + '" name="' + inputName + '"> Select me';
+          }
+
+          formHTML += '<br>';
+        }
+
+        formHTML += '<input type="submit" value="Submit"></form>';
+
+        var formattedHTML = formHTML.replace(/</g, '&lt;').replace(/>/g, '&gt;'); // Escape HTML tags
+        formattedHTML = formattedHTML.replace(/&lt;\/?textarea.*?&gt;/g, function (match) { // Preserve textarea content
+          return match.replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+        });
+
+        // Set the formatted HTML as the content of the <pre> element
+        document.getElementById('generatedForm').innerHTML = '<pre>' + formattedHTML + '</pre>';
+      }
+    // function generateForm() {
+    //   var numInputs = document.getElementById('numInputs').value;
+    //   var formHTML = '<form>';
+
+    //   for (var i = 1; i <= numInputs; i++) {
+    //     var inputType = document.getElementById('inputType' + i).value;
+    //     var inputName = document.getElementById('inputName' + i).value;
+
+    //     formHTML += '<label for="'+ inputName + '"">' + inputName + ': </label>';
+
+    //     if (inputType === 'text' || inputType === 'number' || inputType === 'email') {
+    //       formHTML += '<input type="' + inputType + '" name="' + inputName + '" id="' + inputName + '">';
+    //     } else if (inputType === 'textarea') {
+    //       formHTML += '<textarea name="' + inputName + '" id="' + inputName + '"></textarea>';
+    //     } else if (inputType === 'checkbox') {
+    //       formHTML += '<input type="checkbox" name="' + inputName + '" id="' + inputName + '"> Check me';
+    //     } else if (inputType === 'radio') {
+    //       formHTML += '<input type="radio" name="' + inputName + '" id="' + inputName + '"> Select me';
+    //     }
+
+    //     formHTML += '<br>';
+    //   }
+
+    //   formHTML += '<input type="submit" value="Submit"></form>';
+
+    //   document.getElementById('generatedForm').innerHTML = formHTML;
+    // }
+    function generateFormCode() {
+        var numInputs = document.getElementById('numInputs').value;
+        var formHTML = '<form>';
+
+        for (var i = 1; i <= numInputs; i++) {
+          var inputType = document.getElementById('inputType' + i).value;
+          var inputName = document.getElementById('inputName' + i).value;
+
+          formHTML += '<label for="' + inputName + '">' + inputName + ': </label>';
+
+          if (inputType === 'text' || inputType === 'number' || inputType === 'email') {
+            formHTML += '<input type="' + inputType + '" name="' + inputName + '" id="' + inputName + '">';
+          } else if (inputType === 'textarea') {
+            formHTML += '<textarea name="' + inputName + '" id="' + inputName + '"></textarea>';
+          } else if (inputType === 'checkbox') {
+            formHTML += '<input type="checkbox" name="' + inputName + '" id="' + inputName + '"> Check me';
+          } else if (inputType === 'radio') {
+            formHTML += '<input type="radio" name="' + inputName + '" id="' + inputName + '"> Select me';
+          }
+
+          formHTML += '<br>';
+        }
+
+        formHTML += '<input type="submit" value="Submit"></form>';
+
+        // Displaying the generated form HTML on the page
+        document.getElementById('generatedForm').innerText = formHTML;
+
+        // Returning the generated form HTML as text
+        return formHTML;
+      }
+  </script>
+</head>
+<body>
+  <h1>Dynamic Form Generator</h1>
+  <div class="maker-holder">
+  <label>Select the number of inputs:</label>
+  <select id="numInputs">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="3">3</option>
+    <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    <option value="9">9</option>
+    <option value="10">10</option>
+  </select>
+
+  <button onclick="generateForm()">Generate Form</button>
+  <button onclick="alert(generateFormCode())">See Form Code</button>
+</div>
+  <div id="inputFields"></div>
+
+  <div id="generatedForm"></div>
+
+  <script>
+    var numInputsSelect = document.getElementById('numInputs');
+
+    numInputsSelect.addEventListener('change', function () {
+      var numInputs = parseInt(numInputsSelect.value);
+      var inputFields = '';
+
+      for (var i = 1; i <= numInputs; i++) {
+        inputFields += '<label>Input ' + i + ' Type:</label>';
+        inputFields += '<select id="inputType' + i + '">';
+        inputFields += '<option value="text">Text</option>';
+        inputFields += '<option value="number">Number</option>';
+        inputFields += '<option value="email">Email</option>';
+        inputFields += '<option value="textarea">Textarea</option>';
+        inputFields += '<option value="checkbox">Checkbox</option>';
+        inputFields += '<option value="radio">Radio</option>';
+        inputFields += '</select><br>';
+
+        inputFields += '<label>Input ' + i + ' Name:</label>';
+        inputFields += '<input type="text" id="inputName' + i + '"><br><br>';
+      }
+
+      document.getElementById('inputFields').innerHTML = inputFields;
+    });
+  </script>
+
+</body>
+</html>
+<style>
+  .maker-holder{
+    display: inline-flex;
+  }
+    <style>
+    pre {
+      white-space: pre-wrap;
+      background-color: #f5f5f5;
+      padding: 10px;
+      font-family: monospace;
+    }
+  </style>
+</style>
